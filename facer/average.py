@@ -266,8 +266,8 @@ if __name__ == '__main__' :
 
 
     # Dimensions of output image
-    w = 500
-    h = 500
+    w = 1200
+    h = 1200
 
     # 0丑 1一般 2漂亮
     fileList = FemaleFace.get_file_by_label(2)
@@ -276,7 +276,7 @@ if __name__ == '__main__' :
     images, allPoints = readImages(fileList)
 
     # Eye corners
-    eyecornerDst = [ (np.int(0.3 * w ), np.int(h / 3)), (np.int(0.7 * w ), np.int(h / 3)) ]
+    eyecornerDst = [ (np.int(0.35 * w ), np.int(h / 2)), (np.int(0.65 * w ), np.int(h / 2)) ]
 
     imagesNorm = []
     pointsNorm = []
@@ -299,7 +299,7 @@ if __name__ == '__main__' :
         points1 = allPoints[i]
 
         # Corners of the eye in input image
-        eyecornerSrc  = [ allPoints[i][36], allPoints[i][45] ] 
+        eyecornerSrc  = [ allPoints[i][38], allPoints[i][39] ]
 
         # Compute similarity transform
         tform = similarityTransform(eyecornerSrc, eyecornerDst)
@@ -361,7 +361,12 @@ if __name__ == '__main__' :
     # Divide by numImages to get average
     output = output / numImages
 
-    # Display result
+     # Display result
     cv2.imshow('image', output)
-    cv2.waitKey(0)
 
+    output = np.int8(output * 127)
+    cv2.imwrite('out.jpg', output)
+
+
+
+    cv2.waitKey(0)
