@@ -10,7 +10,7 @@ from tkFont import Font
 from model import FemaleFace
 from detect import detect_face
 
-image_dir = '/Users/ruoyuliu/Downloads/aaa'
+image_dir = '../data'
 master = None
 tk_image = None
 face_file_list = None
@@ -30,6 +30,8 @@ def get_face_record(offset=0):
     face_record = FemaleFace.get(filename)
     if not face_record:
         face_record = FemaleFace.add(filename, label=-1)
+    else:
+        print 'T..' ,face_record.id
 
 
 def init_master():
@@ -45,13 +47,14 @@ def place_image(offset=0):
     """获取用户头像"""
     global tk_image
     filename = get_filename(offset)
-    print os.path.join(image_dir, filename)
+#   print os.path.join(image_dir, filename)
     image = Image.open(os.path.join(image_dir, filename))
     tk_image = ImageTk.PhotoImage(image)
 
 
 def set_face_label():
     """设置头像标签"""
+    print face_record.id,face_label.get()
     FemaleFace.update(face_record.id, label=face_label.get())
 
     handle_next()
@@ -76,6 +79,7 @@ def init():
     all_files = os.listdir(image_dir)
     face_file_list = filter(lambda x: x.endswith('jpg'), all_files)
     get_face_record(offset)
+
 
     place_image(offset)
     face_image = Label(master, image=tk_image)
@@ -138,7 +142,10 @@ def handle_detect():
     """检查人脸"""
     filename = get_filename(offset)
     file_path = os.path.join(image_dir, filename)
+    print filename
+    print file_path
     result = detect_face(face_record.id, file_path)
+
 
     if result:
         detect_label['text'] = u'检测成功'
@@ -170,3 +177,4 @@ if __name__ == '__main__':
     init_master()
     add_assembly()
     master.mainloop()
+

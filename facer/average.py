@@ -11,6 +11,7 @@ from model import FemaleFace
 
 keyPoints = ['mouth_upper_lip_left_contour2',
              'contour_chin',
+             'mouth_lower_lip_right_contour3',
              'mouth_upper_lip_left_contour1',
              'left_eye_upper_left_quarter',
              'left_eyebrow_lower_middle',
@@ -20,7 +21,7 @@ keyPoints = ['mouth_upper_lip_left_contour2',
              'right_eye_pupil',
              'left_eyebrow_upper_left_quarter',
              'mouth_lower_lip_left_contour2',
-             'mouth_lower_lip_right_contour3',
+             'left_eye_bottom',
              'mouth_lower_lip_bottom',
              'contour_left9',
              'left_eye_lower_right_quarter',
@@ -48,7 +49,6 @@ keyPoints = ['mouth_upper_lip_left_contour2',
              'right_eye_top',
              'mouth_lower_lip_left_contour3',
              'right_eye_right_corner',
-             'left_eye_left_corner',
              'right_eye_lower_right_quarter',
              'mouth_upper_lip_right_contour2',
              'right_eyebrow_lower_right_quarter',
@@ -69,7 +69,7 @@ keyPoints = ['mouth_upper_lip_left_contour2',
              'right_eyebrow_left_corner',
              'right_eye_left_corner',
              'right_eyebrow_lower_left_quarter',
-             'left_eye_bottom',
+             'left_eye_left_corner',
              'mouth_left_corner',
              'right_eyebrow_upper_left_quarter',
              'left_eye_right_corner',
@@ -100,7 +100,7 @@ def readPoints(landmark):
     for item in keyPoints:
         # 所有的图片都是640 * 480
         # 为了通用考虑可以获取图片尺寸
-        x, y = landmark[item]['x'] * 480 / 100., landmark[item]['y'] * 640 / 100.
+        x, y = landmark[item]['x'] , landmark[item]['y'] 
         points.append((int(x), int(y)))
     return points
 
@@ -266,12 +266,12 @@ if __name__ == '__main__' :
 
 
     # Dimensions of output image
-    w = 1200
-    h = 1200
+    w = 600
+    h = 600
 
     # 0丑 1一般 2漂亮
-    fileList = FemaleFace.get_file_by_label(2)
-    fileList = [u'/Users/ruoyuliu/Downloads/aaa/{}'.format(x) for x in fileList]
+    fileList = FemaleFace.get_file_by_label(2) 
+    fileList = [u'../data/{}'.format(x) for x in fileList]
     # Read all images
     images, allPoints = readImages(fileList)
 
@@ -299,7 +299,7 @@ if __name__ == '__main__' :
         points1 = allPoints[i]
 
         # Corners of the eye in input image
-        eyecornerSrc  = [ allPoints[i][38], allPoints[i][39] ]
+        eyecornerSrc  = [ allPoints[i][60], allPoints[i][39] ]
 
         # Compute similarity transform
         tform = similarityTransform(eyecornerSrc, eyecornerDst)
